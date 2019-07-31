@@ -1,0 +1,32 @@
+<div class="col-sm-8">
+    <table ng-table = "userTable" class="table table-sm table-hover" style="width: auto;">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" style="width: 5%">Name</th>
+            <th scope="col" style="width: 10%">Surname</th>
+            <th scope="col" style="width: 10%">Email</th>
+            <th scope="col" style="width: 7%">Phone</th>
+            <th scope="col" style="width: 5%">Birthday Date</th>
+            <th scope="col" style="width: 7%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in users">
+            <td>{{user._source.name}}</td>
+            <td>{{user._source.surname}}</td>
+            <td>{{user._source.email}}</td>
+            <td>{{user._source.phone}}</td>
+            <td>{{user._source.birthdayDate | date: "mediumDate"}}</td>
+            <td class="text-center">
+                <button class="btn btn-dark" ng-click="editUser(user)">Edit</button>
+                <button class="btn btn-dark" ng-click="deleteUser(user._id)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-dark" ng-click="getAllUsers()">Refresh</button>
+    <button class="btn btn-dark" ng-click="add()">Add user</button>
+    <br><br>
+    <h4>{{message}}</h4>
+</div>

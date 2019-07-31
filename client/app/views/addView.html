@@ -1,0 +1,50 @@
+<div class = "col-sm-6">
+<form class="needs-validation" name = "addForm" novalidate>
+    <div class = "form-row">
+        <div class="col-md-3 mb-3">
+            <label>Name:</label>
+            <input type = "text" class="form-control" name = "name" ng-model="currentUser._source.name" pattern = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required/>
+            <div ng-show="addForm.name.$touched">
+                <div ng-show="addForm.name.$error.required">Name is required.</div>
+                <div ng-show="addForm.name.$error.pattern">Input a valid name.</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Surname:</label>
+            <input type = "text" class="form-control" name = "surname" ng-model="currentUser._source.surname" pattern = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$" required/>
+            <div ng-show="addForm.surname.$touched">
+                <div ng-show="addForm.surname.$error.required">Second name is required.</div>
+                <div ng-show="addForm.surname.$error.pattern">Input a valid second name.</div>
+            </div>
+        </div>
+    </div>
+    <div class = "form-row">
+        <div class="col-md-3 mb-3">
+            <label>Email:</label>
+            <input type = "email" class="form-control" name = "email" ng-model="currentUser._source.email"  required/>
+            <div ng-show="addForm.email.$touched">
+                <div ng-show="addForm.email.$error.required">Email is required.</div>
+                <div ng-show="addForm.email.$error.email">Input a valid email!</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Phone:</label>
+            <input type = "tel" class="form-control" name = "phone" ng-model="currentUser._source.phone" pattern = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$" required/>
+            <div ng-show="addForm.phone.$touched">
+                <div ng-show="addForm.phone.$error.required">Phone is required.</div>
+                <div ng-show="addForm.phone.$error.pattern">Input a valid phone.</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label>Birthday Date:</label>
+            <input type = "date" class="form-control" min="1920-01-01" max="2010-12-31" name = "birthdayDate" ng-model="currentUser._source.birthdayDate" required/>
+            <div ng-show="addForm.birthdayDate.$touched">
+                <div ng-show="addForm.birthdayDate.$error.required">Birthday date is required.</div>
+                <div ng-show="addForm.birthdayDate.$error.min || addForm.birthdayDate.$error.max">Input a valid date!</div>
+            </div>
+        </div>
+    </div>
+    <input type="submit" ng-disabled="addForm.$invalid" class="btn btn-dark" ng-click="addUser(currentUser)" value = "Add user"></input>
+    <input type="button" class="btn btn-dark" ng-click="cancel()" value = "Cancel"></input>
+</form>
+</div>
