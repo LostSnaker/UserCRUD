@@ -41,6 +41,7 @@
             <div ng-show="addForm.birthdayDate.$touched">
                 <div ng-show="addForm.birthdayDate.$error.required">Birthday date is required.</div>
                 <div ng-show="addForm.birthdayDate.$error.min || addForm.birthdayDate.$error.max">Input a valid date!</div>
+                <div ng-show="addForm.birthdayDate.$error.date">Input a valid date!</div>
             </div>
         </div>
     </div>

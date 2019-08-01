@@ -2,5 +2,6 @@
 
 var app = angular.module('app',[
     'userCtrl',
-    'userService'
+    'userService',
+    'ui.bootstrap'
 ]);

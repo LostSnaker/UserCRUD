@@ -1,25 +1,17 @@
-/* app css stylesheet */
-
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #f4f8f6;
+  background-color: #343a40;
+  border: 1px solid #e5fdff;
 }
 
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li + li:before {
-  content: "|";
-  padding-right: 0.3em;
+.page-link:focus, .page-link:hover {
+  color: #f4f8f6;
+  background-color: #211f20;
+  border: 1px solid #e5fdff;
+  outline: 0;
 }
