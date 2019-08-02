@@ -7,9 +7,10 @@ angular.module('userCtrl', [])
     function ($scope,UserCRUDService) {
         $scope.displayMode = "table";
         $scope.currentUser = null;
-        $scope.curPage = 1,
-        $scope.itemsPerPage = 10,
-        $scope.maxSize = 5;
+        $scope.currentPage = 1;
+        $scope.itemsPerPage = 10;
+        $scope.numOfPages = 3;
+
 
         $scope.getAllUsers = function () {
             UserCRUDService.getAllUsers()
@@ -17,13 +18,14 @@ angular.module('userCtrl', [])
                     $scope.users = response.data;
                     $scope.message='';
                     $scope.totalItems = $scope.users.length;
-                    console.log($scope.totalItems);
                 })
                 .catch(function (response) {
                     $scope.message = response.data;
                 });
 
         };
+
+        $scope.getAllUsers();
 
         $scope.getUser = function () {
 
@@ -85,28 +87,28 @@ angular.module('userCtrl', [])
 
         $scope.cancel = function() {
             $scope.displayMode = "table";
-        }
+        };
 
         $scope.add = function() {
             $scope.displayMode = "add";
-        }
+        };
 
-        $scope.$watch('curPage + numPerPage', function() {
-            var begin = (($scope.curPage - 1) * $scope.itemsPerPage),
+        $scope.changePage = function(page) {
+            if(page === 0){
+                $scope.currentPage = $scope.numOfPages;
+            }
+            else if(page > $scope.numOfPages){
+                $scope.currentPage = 1;
+            }
+            else $scope.currentPage = page;
+        };
+
+        $scope.$watch('currentPage + users', function() {
+            let begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
                 end = begin + $scope.itemsPerPage;
 
-            $scope.filteredItems = $scope.users.slice(begin, end);
+            $scope.filteredUsers = $scope.users.slice(begin, end);
         });
-
-        function setPagingData(page) {
-            let pagedData = $scope.users.slice(
-                (page - 1) * $scope.itemsPerPage,
-                page * $scope.itemsPerPage
-            );
-            $scope.employees = pagedData;
-        }
-
-        $scope.getAllUsers();
 
 
     }]);
