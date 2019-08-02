@@ -17,6 +17,6 @@ var elasticPort = 9200;
 app.listen(port, function () {
     console.log('Example app listening on port ' + port);
     user_controller.setElasticClient(host, elasticPort);
-    user_controller.checkIndex("test-users");
+    user_controller.checkIndex("newindex");
 });
 
