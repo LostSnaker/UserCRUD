@@ -28,7 +28,7 @@ exports.userCreate = function (req, res) {
     let {name, surname, birthdayDate, phone, email, dateOfChange} = req.body;
 
     client.search({
-        index: 'test-users',
+        index: baseIndex,
         body:{
             "query" : {
                 "bool" : {
