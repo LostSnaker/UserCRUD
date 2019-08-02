@@ -1,9 +1,19 @@
 var elasticsearch = require('elasticsearch');
 
-var client = new elasticsearch.Client({
-    host: 'localhost:9200'
-});
+var baseIndex = null;
+var client = null;
 
+exports.setElasticClient = function (h, p) {
+
+    let port, host, hostPort;
+    host = h.toString();
+    port = p.toString();
+    hostPort = host + ':' + port;
+
+    client = new elasticsearch.Client({
+        host: hostPort
+    });
+}
 
 function validateUser(user, phone, email){
     if (user.phone === phone) {
@@ -38,7 +48,7 @@ exports.userCreate = function (req, res) {
             res.status(409).send(validateUser(resp.hits.hits[0]._source, phone, email));
         } else {
             client.index({
-                index: 'test-users',
+                index: baseIndex,
                 type: 'user',
                 body: {
                     name,
@@ -59,7 +69,7 @@ exports.userRead = function (req, res) {
 
     let entityId = req.params.id;
     client.get({
-        index: 'test-users',
+        index: baseIndex,
         type: 'user',
         id: entityId
     }, (error, resp, status) => {
@@ -78,7 +88,7 @@ exports.userUpdate = function (req, res) {
     let {name, surname, birthdayDate,phone,email,dateOfChange} = req.body;
 
     client.index({
-        index: 'test-users',
+        index: baseIndex,
         type: 'user',
         id: entityId,
         body: {
@@ -103,7 +113,7 @@ exports.userDelete = function (req, res) {
 
     let id = req.params.id;
     client.delete({
-        index: 'test-users',
+        index: baseIndex,
         id,
         type: 'user'
     }, (error, resp, status) => {
@@ -120,7 +130,7 @@ exports.readAll = function (req, res) {
 
 
     client.search({
-        index: 'test-users',
+        index: baseIndex,
         body: {
             query: {
                 "match_all": {}
@@ -137,29 +147,19 @@ exports.readAll = function (req, res) {
     });
 };
 
-exports.checkIndex = function (req, res) {
+exports.checkIndex = function (index) {
 
     client.indices.exists({
-            index: "test-users"
+            index
         }, (error, resp, status) => {
             if (status == 404) {
                 client.indices.create({
-                    index: "test-users"
-                }, (error, resp, status) => {
-                    // if (error) {
-                    //     res.send("Error: " + error.message);
-                    // }
-                    // else {
-                    //     res.send("We have created new index!")
-                    // }
-
+                    index
                 })
             }
-            else {
-                // res.send("It already exists!")
-            }
-
         }
     )
+
+    baseIndex = index;
 };
 
