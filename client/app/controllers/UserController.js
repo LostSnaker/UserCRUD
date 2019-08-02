@@ -47,14 +47,13 @@ angular.module('userCtrl', [])
                 user._source.birthdayDate, user._source.phone, user._source.email)
                 .then(function (response) {
                         $scope.message = response.data;
+                        $scope.users.push(user);
                 })
                 .catch(function (response) {
                         $scope.message = response.data;
                 });
 
             $scope.displayMode = "table";
-
-
         };
 
         $scope.updateUser = function (tempUser) {
@@ -69,27 +68,42 @@ angular.module('userCtrl', [])
             $scope.displayMode = "table";
         };
 
+        $scope.updateOrCreateUser = function(user){
+
+            if(user._id !== undefined){
+                $scope.updateUser(user);
+            }
+            else{
+                $scope.addUser(user);
+            }
+        };
+
         $scope.editUser = function (user){
-            $scope.tempUser = user;
-            $scope.tempUser._source.birthdayDate = new Date($scope.tempUser._source.birthdayDate);
-            $scope.displayMode = "edit";
-        }
+            $scope.currentUser = user;
+            $scope.currentUser._source.birthdayDate = new Date($scope.currentUser._source.birthdayDate);
+            $scope.displayMode = "add";
+        };
 
         $scope.deleteUser = function (userId) {
             UserCRUDService.deleteUser(userId)
                 .then(function (response) {
-                        $scope.message = response.data;
+                    $scope.message = response.data;
+                    $scope.users = $scope.users.filter(function (user) {
+                        return user._id != userId;
+                    })
                 })
                 .catch(function (response) {
-                        $scope.message = response.data;
+                    $scope.message = response.data;
                 });
         };
 
         $scope.cancel = function() {
+            $scope.currentUser = null;
             $scope.displayMode = "table";
         };
 
         $scope.add = function() {
+            $scope.currentUser = null;
             $scope.displayMode = "add";
         };
 
@@ -111,6 +125,6 @@ angular.module('userCtrl', [])
         });
 
 
-    }]);
+    }])
 
 

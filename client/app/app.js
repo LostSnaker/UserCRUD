@@ -3,5 +3,4 @@
 var app = angular.module('app',[
     'userCtrl',
     'userService',
-    'ui.bootstrap'
 ]);
