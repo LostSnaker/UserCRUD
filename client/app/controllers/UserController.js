@@ -2,14 +2,15 @@
 
 angular.module('userCtrl', [])
 
-    .controller('UserCRUDCtrl', ['$scope','UserCRUDService',
+    .controller('UserCRUDCtrl', ['$scope','UserCRUDService', '$timeout',
 
-    function ($scope,UserCRUDService) {
+    function ($scope,UserCRUDService,$timeout) {
         $scope.displayMode = "table";
         $scope.currentUser = null;
         $scope.currentPage = 1;
         $scope.itemsPerPage = 10;
-        $scope.numOfPages = 3;
+        $scope.numOfPages = 1;
+        $scope.pages = [];
 
 
         $scope.getAllUsers = function () {
@@ -46,8 +47,10 @@ angular.module('userCtrl', [])
             UserCRUDService.addUser(user._source.name, user._source.surname,
                 user._source.birthdayDate, user._source.phone, user._source.email)
                 .then(function (response) {
-                        $scope.message = response.data;
+                        $scope.message = response.data.message;
+                        user._id = response.data.id;
                         $scope.users.push(user);
+                        console.log($scope.users);
                 })
                 .catch(function (response) {
                         $scope.message = response.data;
@@ -61,6 +64,15 @@ angular.module('userCtrl', [])
                 tempUser._source.birthdayDate, tempUser._source.phone, tempUser._source.email)
                 .then(function (response) {
                         $scope.message = response.data;
+                        $scope.users.some(function(entry, i) {
+                            if (entry._id === tempUser._id) {
+                                $scope.index = i;
+                                angular.forEach(Object.keys(tempUser._source), function (key) {
+                                    $scope.users[$scope.index]._source[key] = tempUser._source[key];
+                                });
+                                return true;
+                            }
+                        });
                 })
                 .catch(function (response) {
                         $scope.message = response.data;
@@ -79,7 +91,7 @@ angular.module('userCtrl', [])
         };
 
         $scope.editUser = function (user){
-            $scope.currentUser = user;
+            $scope.currentUser = angular.copy(user);
             $scope.currentUser._source.birthdayDate = new Date($scope.currentUser._source.birthdayDate);
             $scope.displayMode = "add";
         };
@@ -118,13 +130,26 @@ angular.module('userCtrl', [])
         };
 
         $scope.$watch('currentPage + users', function() {
+
             let begin = (($scope.currentPage - 1) * $scope.itemsPerPage),
                 end = begin + $scope.itemsPerPage;
 
-            $scope.filteredUsers = $scope.users.slice(begin, end);
+            if($scope.users != undefined) {
+                $scope.filteredUsers = $scope.users.slice(begin, end);
+            $scope.numOfPages = Math.ceil($scope.users.length/$scope.itemsPerPage);
+            }
         });
 
+        $scope.$watch('numOfPages', function () {
+            if($scope.currentPage > $scope.numOfPages) $scope.currentPage -= 1;
+            $scope.pages = [];
+            for(let i = 0; i < $scope.numOfPages; i++){
+                $scope.pages.push(i+1);
+            }
 
-    }])
+        })
+
+
+    }]);
 
 
