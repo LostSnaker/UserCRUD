@@ -59,7 +59,12 @@ exports.userCreate = function (req, res) {
                     dateOfChange
                 }
             }, (error, resp, status) => {
-                res.send((error ? status + ": " + error.message : "User data was successfully added!"));
+                if(error){
+                    res.send(status + ": " + error.message);
+                }
+                else{
+                    res.send({message: "User was successfully added!", id: resp._id});
+                }
             });
         }
     });
