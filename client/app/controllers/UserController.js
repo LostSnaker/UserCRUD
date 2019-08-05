@@ -50,10 +50,11 @@ angular.module('userCtrl', [])
                         $scope.message = response.data.message;
                         user._id = response.data.id;
                         $scope.users.push(user);
-                        console.log($scope.users);
+                        $scope.currentUser = null;
                 })
                 .catch(function (response) {
                         $scope.message = response.data;
+                        $scope.currentUser = user;
                 });
 
             $scope.displayMode = "table";
@@ -110,12 +111,10 @@ angular.module('userCtrl', [])
         };
 
         $scope.cancel = function() {
-            $scope.currentUser = null;
             $scope.displayMode = "table";
         };
 
         $scope.add = function() {
-            $scope.currentUser = null;
             $scope.displayMode = "add";
         };
 
@@ -141,7 +140,7 @@ angular.module('userCtrl', [])
         });
 
         $scope.$watch('numOfPages', function () {
-            if($scope.currentPage > $scope.numOfPages) $scope.currentPage -= 1;
+            if($scope.currentPage > $scope.numOfPages && $scope.currentPage !== 1) $scope.currentPage -= 1;
             $scope.pages = [];
             for(let i = 0; i < $scope.numOfPages; i++){
                 $scope.pages.push(i+1);
