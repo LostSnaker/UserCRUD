@@ -12,7 +12,7 @@
     "@angular/animations": "^8.1.2",
     "@angular/cdk": "^8.1.1",
     "@angular/material": "^8.1.1",
-    "angular": "^1.7.5",
+    "angular": "^1.7.9",
     "angular-loader": "^1.7.5",
     "angular-route": "^1.7.5",
     "angular-ui-bootstrap": "^2.5.6",
